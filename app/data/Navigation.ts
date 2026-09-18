@@ -3,7 +3,7 @@ export const NAV_ITEMS = [
   { name: "EXPERIENCES", link: "/#experiences" },
   { name: "DESTINATIONS", link: "/#destinations" },
   { name: "GALLERY", link: "/gallery" },
-  { name: "CONTACT", link: "/#CONTACT" },
+  { name: "CONTACT", link: "/#footer" },
 ];
 
 export const VILLAS_DROPDOWN_ITEMS = [
