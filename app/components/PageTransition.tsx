@@ -15,7 +15,7 @@ export default function PageTransition() {
       gsap.fromTo(
         el,
         { opacity: 0, y: 16 },
-        { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' }
+        { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out', clearProps: 'transform' }
       );
     });
 

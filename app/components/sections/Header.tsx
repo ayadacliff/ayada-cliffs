@@ -318,7 +318,8 @@ const Header = ({ scrollY, isMenuOpen: externalMenuOpen, setIsMenuOpen: external
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const scrolled = window.scrollY > 50;
+          const scrollPos = window.scrollY || document.documentElement.scrollTop || 0;
+          const scrolled = scrollPos > 50;
           setInternalScrolled((prev) => (prev !== scrolled ? scrolled : prev));
           ticking = false;
         });
@@ -336,7 +337,7 @@ const Header = ({ scrollY, isMenuOpen: externalMenuOpen, setIsMenuOpen: external
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const headerClasses =
-    `fixed top-0 z-50 w-full transition-all duration-500 ` +
+    `fixed top-0 left-0 z-50 w-full transition-all duration-500 ` +
     (isScrolled
       ? "bg-white/90 backdrop-blur-md py-3 shadow-[0_4px_24px_rgba(0,0,0,0.06)] border-b border-stone-200/50"
       : isLightBackground

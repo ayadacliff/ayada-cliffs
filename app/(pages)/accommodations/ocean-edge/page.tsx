@@ -96,13 +96,15 @@ export default function OceanEdgePoolVilla() {
     ], []);
 
     return (
-        <div className="page-content min-h-screen bg-stone-50 text-stone-800">
+        <>
             {/* Header */}
             <Header
                 scrollY={scrollY}
                 isMenuOpen={isMenuOpen}
                 setIsMenuOpen={setIsMenuOpen}
             />
+
+            <div className="page-content min-h-screen bg-stone-50 text-stone-800">
 
             {/* Hero Section with Parallax Effect */}
             <section className="relative h-screen flex items-center justify-center overflow-hidden">
@@ -456,5 +458,6 @@ export default function OceanEdgePoolVilla() {
             {/* Mobile Booking Bar */}
             <MobileBookingBar villaName="Ocean Edge Pool Villa" reserveUrl="/reserve" />
         </div>
+        </>
     );
 }

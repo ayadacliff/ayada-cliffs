@@ -76,11 +76,12 @@ const AyadaCLIFFPage = () => {
         {loading && <LoadingScreen key="loader" />}
       </AnimatePresence>
 
+      <Header
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+      />
+
       <div className="page-content text-dark hide-scrollbar min-h-screen overflow-x-hidden bg-white font-light">
-        <Header
-          isMenuOpen={isMenuOpen}
-          setIsMenuOpen={setIsMenuOpen}
-        />
         <HeroSection />
 
         <IntroductionSection />

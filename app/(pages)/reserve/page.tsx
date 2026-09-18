@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, JSX } from "react";
+import React, { useState, useEffect, JSX, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { COLORS } from "@/app/theme/colors";
 import Header from "@/app/components/sections/Header";
 import VillaSelection from "@/app/components/ui/VillaSelection";
@@ -7,6 +8,7 @@ import CalendarView from "@/app/components/ui/CalendarView";
 import GuestDetails from "@/app/components/ui/GuestDetails";
 import ConfirmationCard from "@/app/components/ui/ConfirmationCard";
 import { Villa } from "@/app/types/types";
+import { VILLAS } from "@/app/data/Villas";
 
 interface FormData {
   prefix: string;
@@ -19,7 +21,8 @@ interface FormData {
 
 type Step = "selection" | "calendar" | "details" | "confirmation";
 
-export default function VillaBookingApp(): JSX.Element {
+function VillaBookingAppContent(): JSX.Element {
+  const searchParams = useSearchParams();
   const [currentStep, setCurrentStep] = useState<Step>("selection");
   const [selectedVilla, setSelectedVilla] = useState<Villa | null>(null);
   const [selectedArrival, setSelectedArrival] = useState<Date | null>(null);
@@ -36,6 +39,46 @@ export default function VillaBookingApp(): JSX.Element {
     phone: "",
     specialRequest: "",
   });
+
+  // Handle pre-filled parameters from Hero Quick Booking Strip
+  useEffect(() => {
+    if (!searchParams) return;
+
+    const villaParam = searchParams.get("villa");
+    const arrivalParam = searchParams.get("arrival");
+    const departureParam = searchParams.get("departure");
+    const guestsParam = searchParams.get("guests");
+
+    if (villaParam) {
+      const found = VILLAS.find((v) => String(v.id) === villaParam);
+      if (found) setSelectedVilla(found);
+    }
+
+    if (arrivalParam) {
+      const arr = new Date(arrivalParam);
+      if (!isNaN(arr.getTime())) {
+        setSelectedArrival(arr);
+        setCurrentMonth(arr.getMonth());
+        setCurrentYear(arr.getFullYear());
+      }
+    }
+
+    if (departureParam) {
+      const dep = new Date(departureParam);
+      if (!isNaN(dep.getTime())) {
+        setSelectedDeparture(dep);
+      }
+    }
+
+    if (guestsParam) {
+      const g = parseInt(guestsParam);
+      if (!isNaN(g)) setAdultCount(g);
+    }
+
+    if (villaParam && (arrivalParam || departureParam)) {
+      setCurrentStep("calendar");
+    }
+  }, [searchParams]);
 
   const nextMonth: number = currentMonth === 11 ? 0 : currentMonth + 1;
   const nextMonthYear: number = currentMonth === 11 ? currentYear + 1 : currentYear;
@@ -109,13 +152,14 @@ export default function VillaBookingApp(): JSX.Element {
   };
 
   return (
-    <div className="page-content min-h-screen h-full flex flex-col justify-between items-center" style={{ backgroundColor: COLORS.secondary }}>
+    <>
       <Header 
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
         isLightBackground={true}
       />
-      <div className="px-4 py-8 pt-24">
+      <div className="page-content min-h-screen h-full flex flex-col justify-between items-center" style={{ backgroundColor: COLORS.secondary }}>
+        <div className="px-4 py-8 pt-24">
         {currentStep === "selection" && (
           <VillaSelection
             selectedVilla={selectedVilla}
@@ -172,5 +216,14 @@ export default function VillaBookingApp(): JSX.Element {
         )}
       </div>
     </div>
+    </>
+  );
+}
+
+export default function VillaBookingApp(): JSX.Element {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#FBF9F5]" />}>
+      <VillaBookingAppContent />
+    </Suspense>
   );
 }

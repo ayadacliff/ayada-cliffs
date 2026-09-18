@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { LUXURY_EASE } from "@/app/data/Animations";
+import HeroBookingStrip from "../ui/HeroBookingStrip";
 
 const HeroSection = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -43,7 +44,7 @@ const HeroSection = () => {
       </div>
 
       {/* Content */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-6 md:pb-16">
         <div className="container mx-auto flex max-w-4xl flex-col items-center text-center">
           {/* Divider hairline */}
           <motion.div
@@ -82,7 +83,7 @@ const HeroSection = () => {
 
           {/* Subtitle / Location */}
           <motion.p
-            className="mb-10 text-sm md:text-base font-light tracking-widest text-white/85 max-w-xl leading-relaxed"
+            className="text-sm md:text-base font-light tracking-widest text-white/85 max-w-xl leading-relaxed"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: isLoaded ? 0.85 : 0, y: isLoaded ? 0 : 16 }}
             transition={{ duration: 1.0, delay: 0.65, ease: LUXURY_EASE }}
@@ -90,15 +91,16 @@ const HeroSection = () => {
             Luxury Private Pool Beach Villas — Varkala, Kerala
           </motion.p>
 
-          {/* Action Button */}
+          {/* Action Button - Mobile Only */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 20 }}
+            className="mt-8 md:hidden"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: isLoaded ? 1 : 0, y: isLoaded ? 0 : 16 }}
             transition={{ duration: 0.9, delay: 0.8, ease: LUXURY_EASE }}
           >
             <Link
               href="/reserve"
-              className="group relative inline-flex items-center justify-center overflow-hidden border border-white/40 px-10 py-3 text-xs tracking-[0.25em] uppercase text-white transition-all duration-500 hover:border-white hover:bg-white/10 hover:shadow-[0_0_24px_rgba(255,255,255,0.2)]"
+              className="group relative inline-flex items-center justify-center overflow-hidden border border-white/40 px-9 py-3 text-xs tracking-[0.25em] uppercase text-white transition-all duration-500 hover:border-white hover:bg-white/10 active:scale-95"
             >
               <span className="relative z-10 transition-transform duration-300 group-hover:scale-105">
                 Reserve Now
@@ -109,9 +111,14 @@ const HeroSection = () => {
         </div>
       </div>
 
+      {/* Floating Quick Date & Availability Strip - Desktop Only */}
+      <div className="hidden md:flex absolute bottom-14 inset-x-0 z-30 justify-center pointer-events-auto">
+        <HeroBookingStrip />
+      </div>
+
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20"
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoaded ? 0.8 : 0 }}
         transition={{ duration: 1.0, delay: 1.1 }}
@@ -123,23 +130,12 @@ const HeroSection = () => {
           className="group flex cursor-pointer flex-col items-center focus-visible:outline-none"
           aria-label="Scroll to discover"
         >
-          <span className="mb-2 text-[10px] tracking-[0.25em] uppercase text-white/70 transition-colors group-hover:text-white">
+          <span className="mb-1 text-[9px] tracking-[0.25em] uppercase text-white/70 transition-colors group-hover:text-white">
             Discover
           </span>
-          <div className="relative h-9 w-px overflow-hidden bg-white/20">
-            <motion.div
-              className="h-4 w-full bg-white/80"
-              animate={{ y: [-16, 36] }}
-              transition={{
-                duration: 1.8,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-          </div>
           <ArrowDown
-            size={14}
-            className="mt-1 text-white/70 transition-all duration-300 group-hover:translate-y-0.5 group-hover:text-white"
+            size={13}
+            className="text-white/70 transition-all duration-300 group-hover:translate-y-0.5 group-hover:text-white"
             strokeWidth={1.5}
           />
         </button>

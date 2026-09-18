@@ -326,15 +326,16 @@ const GalleryPage: React.FC = () => {
   };
 
   return (
-    <div
-      className="page-content min-h-screen"
-      style={{ backgroundColor: COLORS.secondary, color: COLORS.dark }}
-    >
+    <>
       <Header
         scrollY={scrollY}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
       />
+      <div
+        className="page-content min-h-screen"
+        style={{ backgroundColor: COLORS.secondary, color: COLORS.dark }}
+      >
 
       {/* Enhanced hero section with smoother parallax */}
       <div
@@ -570,6 +571,7 @@ const GalleryPage: React.FC = () => {
 
       <Footer />
     </div>
+    </>
   );
 };
 
