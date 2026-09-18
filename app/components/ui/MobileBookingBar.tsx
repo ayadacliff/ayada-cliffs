@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
@@ -27,12 +27,21 @@ const MobileBookingBar: React.FC<MobileBookingBarProps> = ({
         window.requestAnimationFrame(() => {
           // Show after scrolling past 300px (typically hero height on mobile)
           const pastHero = window.scrollY > 320;
-          // Hide near footer to avoid overlapping
-          const isNearBottom =
-            window.innerHeight + window.scrollY >=
-            document.documentElement.scrollHeight - 150;
 
-          setIsVisible(pastHero && !isNearBottom);
+          // Hide seamlessly when entering the footer to avoid covering footer content
+          const footer = document.getElementById("footer");
+          let enteredFooter = false;
+          if (footer) {
+            const rect = footer.getBoundingClientRect();
+            // Hide as soon as the top of the footer enters the viewport (with small buffer)
+            enteredFooter = rect.top <= window.innerHeight + 30;
+          } else {
+            enteredFooter =
+              window.innerHeight + window.scrollY >=
+              document.documentElement.scrollHeight - 250;
+          }
+
+          setIsVisible(pastHero && !enteredFooter);
           ticking = false;
         });
         ticking = true;

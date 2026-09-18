@@ -40,15 +40,47 @@ const getColors = (isScrolled: boolean, isMenuOpen = false, isLightBackground = 
   primary: COLORS.primary,
 });
 
-const Logo = ({ isMobile = false, isScrolled = false, isLightBackground = false }: { isMobile?: boolean; isScrolled?: boolean; isLightBackground?: boolean }) => {
+const Logo = ({
+  isMobile = false,
+  isScrolled = false,
+  isLightBackground = false,
+  isMenuOpen = false,
+}: {
+  isMobile?: boolean;
+  isScrolled?: boolean;
+  isLightBackground?: boolean;
+  isMenuOpen?: boolean;
+}) => {
+  const shouldInvert = !isScrolled && !isLightBackground && !isMenuOpen;
   return (
     <Link href="/" aria-label="Ayada Cliff Home" className="transition-transform duration-300 hover:scale-[1.02]">
       {isMobile ? (
-        <Image src={LOGO_PATHS.typo} alt="Ayada Cliff Logo" width={170} height={38} priority className={`transition-all duration-500 ${!isScrolled && !isLightBackground ? 'brightness-0 invert' : ''}`} />
+        <Image
+          src={LOGO_PATHS.typo}
+          alt="Ayada Cliff Logo"
+          width={170}
+          height={38}
+          priority
+          className={`transition-all duration-500 ${shouldInvert ? 'brightness-0 invert' : ''}`}
+        />
       ) : (
         <div className="flex items-center gap-3">
-          <Image src={LOGO_PATHS.mark} alt="Ayada Cliff Mark" width={28} height={28} priority className={`transition-all duration-500 ${!isScrolled && !isLightBackground ? 'brightness-0 invert' : ''}`} />
-          <Image src={LOGO_PATHS.typo} alt="Ayada Cliff Typography" width={170} height={38} priority className={`transition-all duration-500 ${!isScrolled && !isLightBackground ? 'brightness-0 invert' : ''}`} />
+          <Image
+            src={LOGO_PATHS.mark}
+            alt="Ayada Cliff Mark"
+            width={28}
+            height={28}
+            priority
+            className={`transition-all duration-500 ${shouldInvert ? 'brightness-0 invert' : ''}`}
+          />
+          <Image
+            src={LOGO_PATHS.typo}
+            alt="Ayada Cliff Typography"
+            width={170}
+            height={38}
+            priority
+            className={`transition-all duration-500 ${shouldInvert ? 'brightness-0 invert' : ''}`}
+          />
         </div>
       )}
     </Link>
@@ -355,13 +387,13 @@ const Header = ({ scrollY, isMenuOpen: externalMenuOpen, setIsMenuOpen: external
             isScrolled={isScrolled}
             isLightBackground={isLightBackground}
           />
-          <Logo isMobile isScrolled={isScrolled} isLightBackground={isLightBackground} />
+          <Logo isMobile isScrolled={isScrolled} isLightBackground={isLightBackground} isMenuOpen={isMenuOpen} />
           <div className="w-6" /> {/* spacer */}
         </div>
 
         {/* Desktop */}
         <div className="container mx-auto hidden items-center justify-between md:flex px-6">
-          <Logo isScrolled={isScrolled} isLightBackground={isLightBackground} />
+          <Logo isScrolled={isScrolled} isLightBackground={isLightBackground} isMenuOpen={isMenuOpen} />
           <DesktopNavigation isScrolled={isScrolled} isLightBackground={isLightBackground} />
           <ReserveButton color={colors.primary} />
         </div>
