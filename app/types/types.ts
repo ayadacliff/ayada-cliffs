@@ -4,6 +4,9 @@ export interface Accommodation {
   description: string;
   image: string;
   price?: string;
+  amenityBadges?: string[];
+  viewType?: string;
+  maxGuests?: number;
 }
 
 export interface Destination {

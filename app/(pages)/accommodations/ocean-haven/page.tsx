@@ -3,12 +3,15 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, Play, Pause, MapPin, Waves, Users, Coffee, Home, Bath, Bed, Eye, Utensils, Droplets } from 'lucide-react';
 import Header from '@/app/components/sections/Header';
+import ImageLightbox from '@/app/components/ui/ImageLightbox';
+import MobileBookingBar from '@/app/components/ui/MobileBookingBar';
 
 export default function OceanHavenPoolVilla() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrollY, setScrollY] = useState(0);
     const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
     const [isAutoPlaying, setIsAutoPlaying] = useState(false);
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
     // Optimized scroll handler with throttling
     const handleScroll = useCallback(() => {
@@ -272,16 +275,22 @@ export default function OceanHavenPoolVilla() {
 
                     {/* Main Gallery Display */}
                     <div className="relative mb-8">
-                        <div className="relative h-96 md:h-[500px] rounded-lg overflow-hidden">
+                        <div 
+                            className="relative h-96 md:h-[500px] rounded-lg overflow-hidden cursor-zoom-in group"
+                            onClick={() => setIsLightboxOpen(true)}
+                            role="button"
+                            tabIndex={0}
+                            aria-label="Open fullscreen image view"
+                        >
                             <Image
                                 src={galleryImages[currentGalleryIndex]?.src}
                                 alt={galleryImages[currentGalleryIndex]?.alt}
                                 fill
-                                className="object-cover"
+                                className="object-cover transition-transform duration-700 group-hover:scale-105"
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
                                 priority={currentGalleryIndex === 0}
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-70 group-hover:opacity-90 transition-opacity"></div>
                             
                             {/* Navigation Arrows */}
                             <button
@@ -434,6 +443,18 @@ export default function OceanHavenPoolVilla() {
                     <p>&copy; Ayada Cliff. All rights reserved.</p>
                 </div>
             </footer>
+
+            {/* Fullscreen Ambient Lightbox */}
+            <ImageLightbox
+                isOpen={isLightboxOpen}
+                images={galleryImages}
+                currentIndex={currentGalleryIndex}
+                onClose={() => setIsLightboxOpen(false)}
+                onNavigate={(idx) => setCurrentGalleryIndex(idx)}
+            />
+
+            {/* Mobile Booking Bar */}
+            <MobileBookingBar villaName="Ocean Haven Pool Villa" reserveUrl="/reserve" />
         </div>
     );
 }

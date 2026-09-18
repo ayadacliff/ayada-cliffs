@@ -5,6 +5,7 @@ import LenisProvider from "./components/LenisProvider";
 import PageTransition from "./components/PageTransition";
 import { ViewTransitions } from "next-view-transitions";
 import AnalyticsProvider from "./components/ui/AnalyticsProvider";
+import ScrollProgress from "./components/ui/ScrollProgress";
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 const geistSans = Geist({
@@ -99,6 +100,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${josefinSans.variable} quicksand hide-scrollbar antialiased`}
       >
+        <ScrollProgress />
         <Analytics />
         <SpeedInsights />
         <AnalyticsProvider>

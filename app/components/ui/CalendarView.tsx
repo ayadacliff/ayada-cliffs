@@ -107,33 +107,27 @@ const CalendarView: React.FC<CalendarViewProps> = ({
       days.push(
         <td
           key={day}
-          className={`p-2 text-center ${
+          className={`p-1 md:p-2 text-center transition-colors select-none ${
             isPastDate
-              ? "cursor-not-allowed opacity-40"
-              : "hover:bg-opacity-10 cursor-pointer"
-          } ${isSelected ? "bg-opacity-20" : ""}`}
+              ? "cursor-not-allowed bg-transparent"
+              : "cursor-pointer hover:bg-stone-100/70"
+          } ${isSelected && !isPastDate ? "bg-[#84321F]/10" : ""}`}
           onClick={() => {
             if (!isPastDate) {
               onDateSelect(day, month, year);
             }
           }}
-          style={{
-            backgroundColor: isSelected ? COLORS.primary : "",
-            opacity: isSelected ? 0.2 : 1,
-          }}
         >
           <div
-            className="mx-auto flex h-6 w-6 items-center justify-center rounded-full md:h-10 md:w-10"
-            style={{
-              backgroundColor:
-                isArrival || isDeparture ? COLORS.primary : "transparent",
-              color:
-                isArrival || isDeparture
-                  ? COLORS.light
+            className={`mx-auto flex h-7 w-7 md:h-10 md:w-10 items-center justify-center rounded-full text-xs md:text-sm font-light transition-all ${
+              isPastDate
+                ? "text-stone-300 line-through decoration-stone-300/60"
+                : isArrival || isDeparture
+                  ? "bg-[#84321F] text-white shadow-sm scale-105 font-medium"
                   : isSelected
-                    ? COLORS.primary
-                    : COLORS.dark,
-            }}
+                    ? "text-[#84321F] font-medium"
+                    : "text-stone-800 hover:text-[#84321F]"
+            }`}
           >
             {day}
           </div>
@@ -191,6 +185,10 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     );
   };
 
+  const today = new Date();
+  const isCurrentMonthOrPast =
+    currentYear < today.getFullYear() ||
+    (currentYear === today.getFullYear() && currentMonth <= today.getMonth());
   const canCheckAvailability = selectedArrival && selectedDeparture;
 
   return (
@@ -228,8 +226,14 @@ const CalendarView: React.FC<CalendarViewProps> = ({
       <div className="mb-8 flex flex-col items-center justify-center md:flex-row">
         <button
           onClick={onPrevMonth}
-          className="mb-2 p-2 md:mb-0"
-          style={{ color: COLORS.primary }}
+          disabled={isCurrentMonthOrPast}
+          className={`mb-2 p-2.5 rounded-full transition-colors md:mb-0 ${
+            isCurrentMonthOrPast
+              ? "opacity-25 cursor-not-allowed text-stone-400"
+              : "hover:bg-stone-200/60 active:scale-95"
+          }`}
+          style={{ color: isCurrentMonthOrPast ? undefined : COLORS.primary }}
+          aria-label="Previous month"
         >
           <ArrowLeft className="h-5 w-5" />
         </button>

@@ -55,12 +55,26 @@ const AccommodationCard: React.FC<{ item: Accommodation; index: number }> = ({
       <div className="px-1 pt-2">
         <Link href={`/accommodations/${item.id}`} className="group/title inline-block">
           <h3
-            className="mb-3 text-2xl md:text-3xl font-light tracking-wide leading-tight transition-colors duration-300 group-hover/title:text-[#84321F]"
+            className="mb-2.5 text-2xl md:text-3xl font-light tracking-wide leading-tight transition-colors duration-300 group-hover/title:text-[#84321F]"
             style={{ color: COLORS.primary }}
           >
             {item.name}
           </h3>
         </Link>
+
+        {/* At-a-glance amenity tags */}
+        {item.amenityBadges && item.amenityBadges.length > 0 && (
+          <div className="mb-4 flex flex-wrap gap-2">
+            {item.amenityBadges.map((badge, idx) => (
+              <span
+                key={idx}
+                className="inline-flex items-center rounded-full border border-stone-300/70 bg-stone-100/80 px-2.5 py-0.5 text-[11px] font-light tracking-wider text-stone-700 backdrop-blur-xs transition-colors hover:border-[#84321F]/40 hover:text-[#84321F]"
+              >
+                {badge}
+              </span>
+            ))}
+          </div>
+        )}
         
         <p 
           className="mb-6 text-sm md:text-base font-light leading-relaxed text-stone-600 line-clamp-3"

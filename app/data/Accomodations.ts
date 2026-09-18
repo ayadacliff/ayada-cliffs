@@ -5,6 +5,9 @@ export const ACCOMMODATIONS = [
     name: "Ocean Edge Pool Villa",
     description:
       "Our premium villas positioned on the edge of the cliff offering unparalleled views and privacy.",
+    amenityBadges: ["Private Pool", "Cliff Oceanfront", "King Suite", "Max 3 Guests"],
+    viewType: "Direct Cliffside Ocean",
+    maxGuests: 3,
   },
   {
     id: "ocean-haven",
@@ -12,6 +15,9 @@ export const ACCOMMODATIONS = [
     name: "Ocean Haven Pool Villa",
     description:
       "Experience panoramic views of the Arabian Sea from your private balcony in our spacious suites.",
+    amenityBadges: ["Private Pool", "Panoramic Balcony", "King Suite", "Max 3 Guests"],
+    viewType: "Panoramic Arabian Sea",
+    maxGuests: 3,
   },
   
   // {

@@ -33,6 +33,7 @@ const ExperienceSection = dynamic(
 );
 
 import { AnimatePresence } from "framer-motion";
+import MobileBookingBar from "./components/ui/MobileBookingBar";
 
 const AyadaCLIFFPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -93,6 +94,7 @@ const AyadaCLIFFPage = () => {
         />
 
         <Footer />
+        <MobileBookingBar />
       </div>
     </>
   );
