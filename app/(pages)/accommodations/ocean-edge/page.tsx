@@ -1,15 +1,13 @@
 "use client";
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight, X, Play, Pause, MapPin, Mountain, Waves, Users, Coffee, Home, Bath, Bed, Eye, Utensils } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Pause, MapPin, Mountain, Waves, Users, Coffee, Home, Bath, Bed, Eye, Utensils } from 'lucide-react';
 import Header from '@/app/components/sections/Header';
 import Link from 'next/link';
 
 export default function OceanEdgePoolVilla() {
-    const [isLoaded, setIsLoaded] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [scrollY, setScrollY] = useState(0);
-    const [selectedImage, setSelectedImage] = useState(null);
     const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
     const [isAutoPlaying, setIsAutoPlaying] = useState(false);
 
@@ -25,10 +23,6 @@ export default function OceanEdgePoolVilla() {
         window.addEventListener("scroll", throttledScroll, { passive: true });
         return () => window.removeEventListener("scroll", throttledScroll);
     }, [handleScroll]);
-
-    useEffect(() => {
-        setIsLoaded(true);
-    }, []);
 
     // Gallery images data
     const galleryImages = useMemo(() => [
@@ -99,7 +93,7 @@ export default function OceanEdgePoolVilla() {
     ], []);
 
     return (
-        <div className="min-h-screen bg-stone-50 text-stone-800">
+        <div className="page-content min-h-screen bg-stone-50 text-stone-800">
             {/* Header */}
             <Header
                 scrollY={scrollY}

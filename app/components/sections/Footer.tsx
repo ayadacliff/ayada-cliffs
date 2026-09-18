@@ -1,37 +1,37 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { COLORS } from "../../theme/colors";
-import { motion, useInView, useMotionValue } from "framer-motion";
+import { motion, useInView, useMotionValue, useMotionTemplate } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { Phone, MessageCircle, Mail, Instagram, MapPin } from "lucide-react";
+import { LUXURY_EASE } from "../../data/Animations";
 
 const Footer = () => {
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const footerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(footerRef, { once: true });
+  const isInView = useInView(footerRef, { once: true, amount: 0.1 });
 
   const [isMapActive, setIsMapActive] = useState(false);
 
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const mouseX = useMotionValue(200);
+  const mouseY = useMotionValue(200);
+  const radialBg = useMotionTemplate`radial-gradient(500px circle at ${mouseX}px ${mouseY}px, ${COLORS.primary}, transparent 70%)`;
 
   useEffect(() => {
+    const node = footerRef.current;
+    if (!node) return;
+
     const handleMouseMove = (e: MouseEvent) => {
-      if (footerRef.current) {
-        const rect = footerRef.current.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        mouseX.set(x / rect.width);
-        mouseY.set(y / rect.height);
-        setMousePosition({ x, y });
-      }
+      const rect = node.getBoundingClientRect();
+      mouseX.set(e.clientX - rect.left);
+      mouseY.set(e.clientY - rect.top);
     };
-    if (footerRef.current) {
-      footerRef.current.addEventListener("mousemove", handleMouseMove);
-      return () =>
-        footerRef.current?.removeEventListener("mousemove", handleMouseMove);
-    }
+
+    node.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => {
+      node.removeEventListener("mousemove", handleMouseMove);
+    };
   }, [mouseX, mouseY]);
 
   const containerVariants = {
@@ -39,20 +39,20 @@ const Footer = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
+        staggerChildren: 0.08,
+        delayChildren: 0.1,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 24 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.8,
-        ease: [0.25, 0.1, 0.25, 1],
+        ease: LUXURY_EASE,
       },
     },
   };
@@ -96,57 +96,34 @@ const Footer = () => {
       animate={isInView ? "visible" : "hidden"}
       variants={containerVariants}
     >
-      {/* Ambient background gradient that follows mouse */}
+      {/* Ambient background gradient that follows mouse without React re-renders */}
       <motion.div
-        className="pointer-events-none absolute inset-0 opacity-5"
+        className="pointer-events-none absolute inset-0 opacity-[0.07]"
         style={{
-          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, ${COLORS.primary}, transparent 40%)`,
+          background: radialBg,
         }}
       />
-      {/* Floating geometric shapes */}
-      <div className="pointer-events-none absolute inset-0">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute opacity-5"
-            style={{
-              left: `${20 + i * 15}%`,
-              top: `${10 + i * 12}%`,
-              width: `${40 + i * 10}px`,
-              height: `${40 + i * 10}px`,
-              border: `1px solid ${COLORS.primary}`,
-              borderRadius: i % 2 === 0 ? "50%" : "0%",
-            }}
-            animate={{
-              y: [0, -20, 0],
-              rotate: [0, 180, 360],
-              scale: [1, 1.1, 1],
-            }}
-            transition={{
-              duration: 8 + i * 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: i * 0.5,
-            }}
-          />
-        ))}
-      </div>
-      <div className="relative z-10 container mx-auto px-8 py-20">
+      <div className="relative z-10 container mx-auto px-6 md:px-12 py-20 md:py-28">
         {/* Main content grid */}
         <div className="mb-20 grid gap-16 md:grid-cols-1 lg:grid-cols-12">
           {/* Brand section */}
           <motion.div
-            className="space-y-8 lg:col-span-5"
+            className="space-y-6 lg:col-span-5"
             variants={itemVariants}
           >
-            <div className="flex items-center justify-center md:w-[400px]">
-              <motion.img
-                src="/images/logo/ayadaclifflogo.png"
-                className="mb-4 h-auto w-[60vw] md:w-[350px]"
-                style={{ color: COLORS.primary }}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-              ></motion.img>
+            <div className="flex flex-col items-start">
+              <Link href="/" className="inline-block transition-transform duration-300 hover:scale-[1.02]">
+                <Image
+                  src="/images/logo/ayadaclifflogo.png"
+                  alt="Ayada Cliff"
+                  width={340}
+                  height={80}
+                  className="h-auto w-48 md:w-64 object-contain"
+                />
+              </Link>
+              <p className="mt-6 text-sm md:text-base font-light text-stone-600 max-w-sm leading-relaxed">
+                Luxury cliffside private pool beach villas overlooking the infinite Arabian Sea in Varkala, Kerala.
+              </p>
             </div>
           </motion.div>
           {/* Navigation links */}

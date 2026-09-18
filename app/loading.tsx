@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function LoadingScreen() {
   const [isVisible, setIsVisible] = useState(false);
@@ -8,35 +9,56 @@ export default function LoadingScreen() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(true);
-    }, 300);
+    }, 150);
 
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-white">
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-white"
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+    >
       <motion.div
-        className="text-center"
+        className="flex flex-col items-center justify-center px-6 text-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: isVisible ? 1 : 0 }}
-        transition={{ duration: 1.5, ease: "easeInOut" }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <motion.img
-          className="mb-5 w-40 text-4xl font-extralight tracking-widest text-[#84321F] md:w-[14vw] md:text-5xl"
-          initial={{ opacity: 0, y: 0 }}
-          animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
-          transition={{ duration: 1.8, delay: 0.3 }}
-          src="/images/logo/ayadaclifflogo.png"
-          alt="AYADA CLIFF"
-        ></motion.img>
+        <motion.div
+          className="relative mb-5 h-16 w-44 md:h-20 md:w-56"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 12 }}
+          transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <Image
+            src="/images/logo/ayadaclifflogo.png"
+            alt="AYADA CLIFF"
+            fill
+            priority
+            className="object-contain"
+          />
+        </motion.div>
 
         <motion.div
-          className="mx-auto h-px w-16 bg-[#84321F]"
-          initial={{ width: 0 }}
-          animate={{ width: isVisible ? 64 : 0 }}
-          transition={{ duration: 2, delay: 0.6 }}
+          className="h-px bg-[#84321F]"
+          initial={{ width: 0, opacity: 0 }}
+          animate={{ width: isVisible ? 56 : 0, opacity: isVisible ? 0.7 : 0 }}
+          transition={{ duration: 0.8, delay: 0.4, ease: "easeInOut" }}
         />
+
+        <motion.span
+          className="mt-4 text-[10px] uppercase tracking-[0.3em] text-[#84321F]/70 font-light"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isVisible ? 0.8 : 0 }}
+          transition={{ duration: 0.6, delay: 0.55 }}
+        >
+          Varkala • Kerala
+        </motion.span>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
+

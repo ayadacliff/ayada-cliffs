@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import Header from "./components/sections/Header";
 import Footer from "./components/sections/Footer";
 import LoadingScreen from "./loading";
-import PageTransition from "./components/PageTransition";
 import UnderMaintenancePage from "./components/sections/UnderMaintenance";
 import dynamic from "next/dynamic";
 import HeroSection from "./components/sections/HeroSection";
@@ -33,9 +32,10 @@ const ExperienceSection = dynamic(
   { ssr: false },
 );
 
+import { AnimatePresence } from "framer-motion";
+
 const AyadaCLIFFPage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
   const [selectedFeature, setSelectedFeature] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -47,15 +47,9 @@ const AyadaCLIFFPage = () => {
       | "maintenance") || "development";
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 4000);
+    }, 1200);
 
     return () => clearTimeout(timer);
   }, []);
@@ -67,10 +61,6 @@ const AyadaCLIFFPage = () => {
     };
   }, [loading]);
 
-  if (loading) {
-    return <LoadingScreen />;
-  }
-
   if (prodEnvironment === "maintenance") {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
@@ -80,27 +70,31 @@ const AyadaCLIFFPage = () => {
   }
 
   return (
-    <div className="text-dark hide-scrollbar min-h-screen overflow-x-hidden bg-white font-light">
-      <Header
-        scrollY={scrollY}
-        isMenuOpen={isMenuOpen}
-        setIsMenuOpen={setIsMenuOpen}
-      />
-      <PageTransition />
-      <HeroSection />
+    <>
+      <AnimatePresence mode="wait">
+        {loading && <LoadingScreen key="loader" />}
+      </AnimatePresence>
 
-      <IntroductionSection />
-      <AccommodationsSection />
-      <CarouselSection />
-      <ExperienceSection />
+      <div className="page-content text-dark hide-scrollbar min-h-screen overflow-x-hidden bg-white font-light">
+        <Header
+          isMenuOpen={isMenuOpen}
+          setIsMenuOpen={setIsMenuOpen}
+        />
+        <HeroSection />
 
-      <DestinationsSection
-        selectedFeature={selectedFeature}
-        setSelectedFeature={setSelectedFeature}
-      />
+        <IntroductionSection />
+        <AccommodationsSection />
+        <CarouselSection />
+        <ExperienceSection />
 
-      <Footer />
-    </div>
+        <DestinationsSection
+          selectedFeature={selectedFeature}
+          setSelectedFeature={setSelectedFeature}
+        />
+
+        <Footer />
+      </div>
+    </>
   );
 };
 

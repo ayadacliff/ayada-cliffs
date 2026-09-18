@@ -1,8 +1,8 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { COLORS } from "../../theme/colors";
-import { ANIMATIONS } from "../../data/Animations";
-import { Plus } from "lucide-react";
+import { LUXURY_EASE } from "../../data/Animations";
+import { ArrowRight, Plus } from "lucide-react";
 import Image from "next/image";
 
 interface Destination {
@@ -21,117 +21,120 @@ interface DestinationCardProps {
 const DestinationCard: React.FC<DestinationCardProps> = ({ destination, isSelected, onSelect }) => {
   return (
     <motion.div
-      className={`relative cursor-pointer overflow-hidden rounded-sm transition-all duration-700 ease-in-out 
+      className={`relative cursor-pointer overflow-hidden rounded-sm transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] 
         ${isSelected 
-          ? "w-full md:w-[35vw]" 
-          : "w-full md:w-[12vw]"
+          ? "w-full md:w-[46%] md:flex-[4] shadow-2xl" 
+          : "w-full md:w-[18%] md:flex-[1.1] opacity-90 hover:opacity-100 shadow-md hover:shadow-xl"
         } 
-        h-[300px] md:h-[450px] lg:h-[600px]
-        ${destination.id % 2 === 0 ? "md:mt-10" : "mt-0"}
+        h-[320px] md:h-[480px] lg:h-[560px] flex-shrink-0 md:flex-shrink
+        ${destination.id % 2 === 0 ? "md:mt-8" : "mt-0"}
         group`}
-      variants={ANIMATIONS.fadeIn}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.8, ease: LUXURY_EASE }}
       onClick={onSelect}
       whileHover={{
-        scale: isSelected ? 1 : 1.02,
+        scale: isSelected ? 1 : 1.015,
       }}
     >
       {/* Subtle image overlay */}
       <div 
-        className={`absolute inset-0 z-10 transition-opacity duration-700 ${
+        className={`absolute inset-0 z-10 transition-colors duration-700 ${
           isSelected 
-            ? "bg-gradient-to-t from-black/80 via-black/40 to-transparent" 
-            : "bg-gradient-to-t from-black/70 to-transparent/20"
+            ? "bg-gradient-to-t from-black/85 via-black/40 to-transparent" 
+            : "bg-gradient-to-t from-black/75 via-black/30 to-black/10 group-hover:from-black/80"
         }`} 
       />
       
       {/* Image with hover effect */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden bg-stone-900">
         <Image
           src={destination.image}
           alt={destination.name}
-          className={`h-full w-full object-cover transition-all duration-1000 ${
+          className={`h-full w-full object-cover transition-transform duration-1000 ease-out ${
             isSelected ? "scale-105" : "group-hover:scale-110"
           }`}
-          width={500}
-          height={300}
+          fill
+          sizes="(max-width: 768px) 100vw, 40vw"
         />
       </div>
       
-      {/* Content overlay for selected state */}
-      <div className="absolute bottom-0 left-0 right-0 z-20">
-        {isSelected ? (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, ease: "easeOut" ,delay:1.0}}
-            className="p-6 md:p-8 lg:p-10"
-          >
-            {/* Thin decorative line */}
-            <div 
-              className="mb-4 h-px w-10 opacity-80"
-              style={{ backgroundColor: COLORS.secondary }}
-            />
-            
-            {/* Title with elegant typography */}
-            <h3
-              className="mb-3 text-xl md:text-2xl font-light tracking-wide josefin-sans-medium"
-              style={{ color: COLORS.secondary }}
+      {/* Content overlay */}
+      <div className="absolute inset-0 flex flex-col justify-end z-20 pointer-events-none">
+        <AnimatePresence mode="wait">
+          {isSelected ? (
+            <motion.div
+              key="selected"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 12 }}
+              transition={{ duration: 0.45, ease: LUXURY_EASE, delay: 0.1 }}
+              className="p-6 md:p-8 lg:p-10 pointer-events-auto"
             >
-              {destination.name}
-            </h3>
-            
-            {/* Description with improved styling */}
-            <p 
-              className="mb-4 text-sm md:text-base font-light max-w-md opacity-90 leading-relaxed"
-              style={{ color: COLORS.secondary }}
+              {/* Thin decorative line */}
+              <div 
+                className="mb-3 h-px w-10 opacity-70"
+                style={{ backgroundColor: COLORS.secondary }}
+              />
+              
+              {/* Title */}
+              <h3
+                className="mb-3 text-2xl md:text-3xl font-light tracking-wide text-white"
+              >
+                {destination.name}
+              </h3>
+              
+              {/* Description */}
+              <p 
+                className="mb-5 text-xs md:text-sm font-light max-w-md text-stone-200 leading-relaxed"
+              >
+                {destination.description}
+              </p>
+              
+              {/* Discover Link */}
+              <div
+                className="inline-flex items-center gap-2 text-xs tracking-widest uppercase transition-all duration-300 group/link text-white/90 hover:text-white"
+              >
+                <span>Discover Destination</span>
+                <ArrowRight size={14} className="transition-transform duration-300 group-hover/link:translate-x-1" />
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="collapsed"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.35 }}
+              className="p-5 md:p-6 pointer-events-auto h-full flex flex-row md:flex-col justify-between items-end md:items-start"
             >
-              {destination.description}
-            </p>
-            
-            {/* Subtle "Discover" link */}
-            <div className="inline-flex items-center gap-2 text-xs tracking-widest uppercase transition-all duration-300 group/link hover:opacity-80"
-              style={{ color: COLORS.secondary }}
-            >
-              <span>Discover</span>
-              <div className="h-px w-6 opacity-70 group-hover/link:w-10 transition-all duration-500" style={{ backgroundColor: COLORS.secondary }} />
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.5,delay: 0.5 }}
-            className="p-6 md:p-8"
-          >
-            {/* Minimalist label for non-selected state */}
-            <h4
-              className="mx-3 text-xs md:text-sm tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300 rotate-0 md:-rotate-90 md:origin-bottom-left"
-              style={{ color: COLORS.secondary }}
-            >
-              {destination.name}
-            </h4>
-          </motion.div>
-        )}
+              {/* Plus icon on top for desktop */}
+              <div
+                className="hidden md:flex h-8 w-8 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/40 group-hover:scale-110"
+              >
+                <Plus size={16} strokeWidth={1.5} />
+              </div>
+
+              {/* Label for collapsed card: upright and readable on both desktop and mobile */}
+              <div className="w-full md:pb-2">
+                <h4
+                  className="text-xs md:text-sm tracking-widest uppercase font-light text-white/90 group-hover:text-white transition-colors [writing-mode:horizontal-tb] md:[writing-mode:vertical-rl] md:rotate-180 select-none whitespace-nowrap"
+                >
+                  {destination.name}
+                </h4>
+              </div>
+
+              {/* Plus icon for mobile */}
+              <div
+                className="flex md:hidden h-8 w-8 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm text-white transition-all duration-300 group-hover:bg-white/40"
+              >
+                <Plus size={16} strokeWidth={1.5} />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-      
-      {/* Elegant expand button for non-selected state */}
-      {!isSelected && (
-        <motion.button
-          className="absolute bottom-6 right-6 flex h-8 w-8 md:h-10 md:w-10 items-center justify-center rounded-sm backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-500"
-          style={{
-            backgroundColor: `${COLORS.secondary}40`,
-            color: COLORS.secondary,
-            border: `1px solid ${COLORS.secondary}80`
-          }}
-          whileHover={{
-            scale: 1.1,
-          }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Plus size={18} strokeWidth={1} />
-        </motion.button>
-      )}
     </motion.div>
   );
 };

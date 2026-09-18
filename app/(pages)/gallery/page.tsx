@@ -6,7 +6,6 @@ import React, {
   useRef,
   useCallback,
   useMemo,
-  KeyboardEvent,
 } from "react";
 import { X, ArrowLeft, ArrowRight, Camera } from "lucide-react";
 import Header from "@/app/components/sections/Header";
@@ -328,7 +327,7 @@ const GalleryPage: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen"
+      className="page-content min-h-screen"
       style={{ backgroundColor: COLORS.secondary, color: COLORS.dark }}
     >
       <Header

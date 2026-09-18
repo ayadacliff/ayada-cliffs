@@ -5,7 +5,8 @@ export async function generateSitemaps() {
   return [{ id: 0 }];
 }
 
-export default async function sitemap({ id }: { id: number }) {
+export default async function sitemap(props?: { id: number }) {
+  void props;
   const BASE_URL = 'https://ayadacliff.com';
 
   const staticRoutes = [

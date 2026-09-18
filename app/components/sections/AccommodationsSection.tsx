@@ -3,29 +3,13 @@ import { COLORS } from "../../theme/colors";
 import { motion } from "framer-motion";
 import AccommodationCard from "../ui/AccommodationCard";
 import { ACCOMMODATIONS } from "../../data/Accomodations";
-
-const fadeIn = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 1, ease: [0.25, 0.1, 0.25, 1] },
-  },
-};
-
-const staggerChildren = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.4, delayChildren: 0.2 },
-  },
-};
+import { LUXURY_EASE } from "../../data/Animations";
 
 const AccommodationsSection = () => {
   return (
     <section
       id="stay"
-      className="relative py-16 pt-24 px-4 md:px-16"
+      className="relative py-24 md:py-32 px-6 md:px-12"
       style={{
         backgroundColor: COLORS.secondary,
         backgroundImage:
@@ -35,54 +19,45 @@ const AccommodationsSection = () => {
       <div className="container mx-auto max-w-7xl">
         {/* Section Header */}
         <motion.div
-          className="mb-16 text-center"
-          initial="hidden"
-          whileInView="visible"
+          className="mb-16 md:mb-20 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          variants={fadeIn}
+          transition={{ duration: 0.9, ease: LUXURY_EASE }}
         >
           {/* Decorative Label */}
-          <div className="flex items-center justify-center mb-6">
-            <div className="h-px w-16 bg-primary opacity-20" />
+          <div className="flex items-center justify-center mb-5 gap-3">
+            <div className="h-px w-10 bg-[#84321F]/25" />
             <span
-              className="mx-8 text-xs uppercase font-extralight tracking-[0.25em]"
+              className="text-xs uppercase font-light tracking-[0.25em]"
               style={{ color: COLORS.primary }}
             >
               Curated Retreats
             </span>
-            <div className="h-px w-16 bg-primary opacity-20" />
+            <div className="h-px w-10 bg-[#84321F]/25" />
           </div>
 
           <h2
-            className="mb-6 text-4xl md:text-5xl font-light tracking-wide"
+            className="mb-6 text-3xl md:text-4xl lg:text-5xl font-light tracking-tight"
             style={{ color: COLORS.primary }}
           >
             Elevated Living Experiences
           </h2>
 
           <p
-            className="mx-auto max-w-2xl text-base md:text-lg font-light leading-relaxed opacity-85"
-            style={{ color: COLORS.primary }}
+            className="mx-auto max-w-2xl text-base md:text-lg font-light leading-relaxed text-stone-700/90"
           >
             Discover our thoughtfully designed spaces where modern luxury meets
-            coastal serenity—creating perfect moments of quiet indulgence.
+            coastal serenity — creating perfect moments of quiet indulgence.
           </p>
         </motion.div>
 
-        {/* Accommodation Cards */}
-        <motion.div
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 max-w-6xl mx-auto"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={staggerChildren}
-        >
+        {/* Accommodation Cards Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 max-w-6xl mx-auto">
           {ACCOMMODATIONS.slice(0, 2).map((item, index) => (
-            <motion.div key={item.id} variants={fadeIn} className="flex justify-center">
-              <AccommodationCard item={item} index={index} />
-            </motion.div>
+            <AccommodationCard key={item.id} item={item} index={index} />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -1,7 +1,6 @@
 import { DAYS, MONTHS } from "@/app/data/Reserve";
 import { COLORS } from "@/app/theme/colors";
 import { Villa } from "@/app/types/types";
-import { on } from "events";
 import {
   ArrowLeft,
   Calendar,

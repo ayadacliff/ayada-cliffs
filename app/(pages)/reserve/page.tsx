@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useMemo, useEffect, JSX } from "react";
+import React, { useState, JSX } from "react";
 import { COLORS } from "@/app/theme/colors";
 import Header from "@/app/components/sections/Header";
 import VillaSelection from "@/app/components/ui/VillaSelection";
@@ -7,7 +7,6 @@ import CalendarView from "@/app/components/ui/CalendarView";
 import GuestDetails from "@/app/components/ui/GuestDetails";
 import ConfirmationCard from "@/app/components/ui/ConfirmationCard";
 import { Villa } from "@/app/types/types";
-
 
 interface FormData {
   prefix: string;
@@ -41,17 +40,7 @@ export default function VillaBookingApp(): JSX.Element {
   const nextMonth: number = currentMonth === 11 ? 0 : currentMonth + 1;
   const nextMonthYear: number = currentMonth === 11 ? currentYear + 1 : currentYear;
 
-  const [scrollY, setScrollY] = useState<number>(0);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  
-  useEffect(() => {
-    const handleScroll = (): void => {
-      setScrollY(window.scrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const handleVillaSelect = (villa: Villa): void => {
     setSelectedVilla(villa);
@@ -120,11 +109,11 @@ export default function VillaBookingApp(): JSX.Element {
   };
 
   return (
-    <div className="min-h-screen h-full flex flex-col justify-between items-center" style={{ backgroundColor: COLORS.secondary }}>
+    <div className="page-content min-h-screen h-full flex flex-col justify-between items-center" style={{ backgroundColor: COLORS.secondary }}>
       <Header 
-        scrollY={scrollY}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
+        isLightBackground={true}
       />
       <div className="px-4 py-8 pt-24">
         {currentStep === "selection" && (

@@ -2,6 +2,7 @@
 
 import { COLORS } from "@/app/theme/colors";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 
 const UnderMaintenancePage = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -45,10 +46,13 @@ const UnderMaintenancePage = () => {
                   : "translate-y-4 opacity-0"
               }`}
             >
-              <img
+              <Image
                 src="/images/logo/ayadaclifflogo-typo.png"
                 alt="AYADA CLIFF"
-                className="w-full"
+                width={300}
+                height={80}
+                className="w-full h-auto"
+                priority
               />
             </div>
 
