@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect, JSX, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { COLORS } from "@/app/theme/colors";
 import Header from "@/app/components/sections/Header";
 import VillaSelection from "@/app/components/ui/VillaSelection";
 import CalendarView from "@/app/components/ui/CalendarView";
@@ -158,8 +157,8 @@ function VillaBookingAppContent(): JSX.Element {
         setIsMenuOpen={setIsMenuOpen}
         isLightBackground={true}
       />
-      <div className="page-content min-h-screen h-full flex flex-col justify-between items-center" style={{ backgroundColor: COLORS.secondary }}>
-        <div className="px-4 py-8 pt-24">
+      <div className="page-content min-h-screen h-full flex flex-col justify-between items-center bg-gradient-to-b from-[#FAF8F5] via-[#F3EFEA] to-[#EBE4DA] text-stone-800">
+        <div className="w-full max-w-6xl px-4 py-8 pt-24 md:pt-28 flex-1">
         {currentStep === "selection" && (
           <VillaSelection
             selectedVilla={selectedVilla}
