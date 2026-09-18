@@ -243,7 +243,7 @@ const Footer = () => {
             onMouseLeave={() => setIsMapActive(false)}
           >
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d331.29098234094744!2d76.68592018341018!3d8.763690895825375!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b05ef0025f67b59%3A0x4451c32f795b30bf!2sAyada%20Cliff%20Beach%20Villas!5e1!3m2!1sen!2sin!4v1754952051022!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d600!2d76.68592018341018!3d8.763690895825375!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sin!4v1754952051022!5m2!1sen!2sin"
               className={`h-full w-full border-0 ${
                 isMapActive ? "pointer-events-auto" : "pointer-events-none"
               }`}
